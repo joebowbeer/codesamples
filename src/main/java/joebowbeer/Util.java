@@ -189,7 +189,7 @@ public class Util {
 
     IntStream values = Arrays.stream(s.replaceAll(" and ", " ").split(" ")).mapToInt(dict::get);
 
-    // The following expression correctly evaluates a surprising number of cases.
+    // This expression correctly evaluates a surprising number of cases:
     // return values.reduce(0, (acc, e) -> (acc != 0 && acc < e) ? acc * e : acc + e);
 
     Eval tree = new Eval();
@@ -199,6 +199,12 @@ public class Util {
 
   static class Eval {
 
+    /**
+     * Represents a numerical expression as a heap. The value in each node is greater or equal
+     * to all values in its left and right subtrees. The values in each node's left subtree were
+     * appended before the node's value was appended, and values in the right subtree were inserted
+     * after this node was inserted.
+     */
     static class Node {
 
       Node left;
@@ -214,6 +220,10 @@ public class Util {
         this.value = value;
       }
 
+      /**
+       * Returns right subtree's value summed with the product of this node's value and the
+       * left subtree's value.
+       */
       int eval() {
         return ((left != null) ? left.eval() : 1) * value + ((right != null) ? right.eval() : 0);
       }
@@ -221,6 +231,13 @@ public class Util {
 
     Node root;
 
+    /**
+     * Inserts the given value in the tree. The given value will be inserted as a new root
+     * if it is greater than the current root's value. Otherwise, the given value will be
+     * inserted as the rightmost descendent of the existing root.
+     * 
+     * @param value 
+     */
     void append(int value) {
       if (root == null || value > root.value) {
         root = new Node(root, value);
