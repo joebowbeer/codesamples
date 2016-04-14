@@ -1,8 +1,13 @@
 package joebowbeer;
 
+import java.util.Comparator;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 public class UtilTest {
@@ -62,5 +67,17 @@ public class UtilTest {
     assertEquals(Character.valueOf('g'), Util.findFirstUniqueCharacter("abcdefgfedcba"));
     assertNull(Util.findFirstUniqueCharacter(""));
     assertNull(Util.findFirstUniqueCharacter("aabbcc"));
+  }
+
+  @Test
+  public void testSampleCompare() {
+    Comparator<String> comparator = new Util.SampleComparator();
+    assertThat(comparator.compare("", ""), equalTo(0));
+    assertThat(comparator.compare("ab", "ab"), equalTo(0));
+    assertThat(comparator.compare("ab", "abc"), lessThan(0));
+    assertThat(comparator.compare("abc", "ab"), greaterThan(0));
+    assertThat(comparator.compare("a10b", "a2b"), greaterThan(0));
+    assertThat(comparator.compare("a10b", "ab"), lessThan(0));
+    assertThat(comparator.compare("ab2", "a2"), greaterThan(0));
   }
 }

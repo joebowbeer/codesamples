@@ -3,6 +3,7 @@ package joebowbeer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,5 +119,50 @@ public class Util {
     }
     // Return null if not found
     return null;
+  }
+
+  /* 5 */
+
+  /**
+   * Comparator for strings with a twist: consecutive digits are compared according to their
+   * numeric value. For example, "a10b" compares greater than "a2b" because 10 is greater than 2.
+   */
+  static class SampleComparator implements Comparator<String> {
+
+    @Override
+    public int compare(String a, String b) {
+      int lenA = a.length();
+      int lenB = b.length();
+      for (int i = 0, j = 0; i < lenA && j < lenB; ) {
+        char charA = a.charAt(i);
+        char charB = b.charAt(j);
+        boolean hasNumA = Character.isDigit(charA);
+        boolean hasNumB = Character.isDigit(charB);
+        if (hasNumA && hasNumB) {
+          int startIndex = i;
+          while (++i < lenA && Character.isDigit(a.charAt(i))) { }
+          int numA = Integer.parseInt(a.substring(startIndex, i));
+          startIndex = j;
+          while (++j < lenB && Character.isDigit(b.charAt(j))) { }
+          int numB = Integer.parseInt(b.substring(startIndex, j));
+          int c = Integer.compare(numA, numB);
+          if (c != 0) {
+            return c;
+          }
+        } else if (hasNumA) {
+          return -1;
+        } else if (hasNumB) {
+          return 1;
+        } else {
+          int c = Character.compare(charA, charB);
+          if (c != 0) {
+            return c;
+          }
+          i++;
+          j++;
+        }
+      }
+      return lenA - lenB;
+    }
   }
 }
