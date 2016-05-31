@@ -80,4 +80,24 @@ public class UtilTest {
     assertThat(comparator.compare("a10b", "ab"), lessThan(0));
     assertThat(comparator.compare("ab2", "a2"), greaterThan(0));
   }
+
+  @Test
+  public void testPreviousSmaller() {
+    assertArrayEquals(new int[] { }, Util.leftNearestSmaller(new int[] { }));
+    assertArrayEquals(new int[] { -1 }, Util.leftNearestSmaller(new int[] { 0 }));
+    assertArrayEquals(new int[] { -1, 0, 1, 2 }, Util.leftNearestSmaller(new int[] { 0, 1, 2, 3 }));
+    assertArrayEquals(new int[] { -1, -1, -1, -1 }, Util.leftNearestSmaller(new int[] { 3, 2, 1, 0 }));
+    assertArrayEquals(new int[] { -1, 0, 1, 0 }, Util.leftNearestSmaller(new int[] { 0, 2, 3, 1 }));
+  }
+
+  @Test
+  public void testClosestSmaller() {
+    assertArrayEquals(new int[] { }, Util.closestSmaller(new int[] { }));
+    assertArrayEquals(new int[] { -1 }, Util.closestSmaller(new int[] { 0 }));
+    assertArrayEquals(new int[] { -1, 0, 1, 2 }, Util.closestSmaller(new int[] { 0, 1, 2, 3 }));
+    assertArrayEquals(new int[] { 1, 2, 3, -1 }, Util.closestSmaller(new int[] { 3, 2, 1, 0 }));
+    assertArrayEquals(new int[] { -1, 0, 1, 0 }, Util.closestSmaller(new int[] { 0, 2, 3, 1 }));
+    assertArrayEquals(new int[] { 1, 2, -1, 2 }, Util.closestSmaller(new int[] { 3, 1, 0, 2 }));
+    assertArrayEquals(new int[] { 3, 0, 3, -1 }, Util.closestSmaller(new int[] { 1, 3, 2, 0 }));
+  }
 }

@@ -165,4 +165,49 @@ public class Util {
       return lenA - lenB;
     }
   }
+
+  /* All Nearest Smaller Values */
+
+  public static int[] leftNearestSmaller(int[] elements) {
+    int size = elements.length;
+    int[] result = new int[size];
+    for (int i = 0; i < size; i++) {
+      int j = i - 1;
+      while (j != -1 && elements[j] >= elements[i]) {
+        j = result[j];
+      }
+      result[i] = j;
+    }
+    return result;
+  }
+
+  public static int[] rightNearestSmaller(int[] elements) {
+    int size = elements.length;
+    int[] result = new int[size];
+    for (int i = size; --i >= 0; ) {
+      int j = i + 1;
+      while (j != size && elements[j] >= elements[i]) {
+        j = result[j];
+      }
+      result[i] = j;
+    }
+    return result;
+  }
+
+  public static int[] closestSmaller(int[] elements) {
+    int[] prev = leftNearestSmaller(elements);
+    int[] next = rightNearestSmaller(elements);
+    int size = elements.length;
+    int[] result = new int[size];
+    for (int i = 0; i < size; i++) {
+      if (next[i] == size) {
+        result[i] = prev[i];
+      } else if (prev[i] == -1) {
+        result[i] = next[i];
+      } else {
+        result[i] = (i - prev[i] <= next[i] - i) ? prev[i] : next[i];
+      }
+    }
+    return result;
+  }
 }
