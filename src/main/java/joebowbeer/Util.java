@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.stream.IntStream;
 
 /** Tool class containing coding exercises. */
@@ -209,5 +210,29 @@ public class Util {
       }
     }
     return result;
+  }
+
+  /* K Selection */
+
+  /**
+   * Returns <code>k</code> smallest elements in a list of comparable elements.
+   * @param <T> element type
+   * @param list list of elements
+   * @param k number of elements to return
+   * @return smallest elements
+   */
+  public static <T extends Comparable<T>> List<T> selectSmallest(List<T> list, int k) {
+    if (list.size() <= k) {
+      return list;
+    }
+    PriorityQueue<T> pq = new PriorityQueue<>(k, Collections.reverseOrder());
+    pq.addAll(list.subList(0, k));
+    for (T e : list.subList(k, list.size())) {
+      if (e.compareTo(pq.peek()) < 0) {
+        pq.remove();
+        pq.add(e);
+      }
+    }
+    return new ArrayList<>(pq);
   }
 }

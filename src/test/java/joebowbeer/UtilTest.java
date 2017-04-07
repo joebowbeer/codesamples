@@ -1,6 +1,9 @@
 package joebowbeer;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
@@ -99,5 +102,12 @@ public class UtilTest {
     assertArrayEquals(new int[] { -1, 0, 1, 0 }, Util.closestSmaller(new int[] { 0, 2, 3, 1 }));
     assertArrayEquals(new int[] { 1, 2, -1, 2 }, Util.closestSmaller(new int[] { 3, 1, 0, 2 }));
     assertArrayEquals(new int[] { 3, 0, 3, -1 }, Util.closestSmaller(new int[] { 1, 3, 2, 0 }));
+  }
+
+  @Test
+  public void testSelectSmallest() {
+    assertThat(Util.selectSmallest(Arrays.asList(1), 2), Matchers.containsInAnyOrder(1));
+    List<Integer> list = Arrays.asList(1, -2, 3, 101, 100, 99, 98, -1, 2, -3);
+    assertThat(Util.selectSmallest(list, 2), Matchers.containsInAnyOrder(-2, -3));
   }
 }
